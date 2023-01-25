@@ -7,16 +7,15 @@ MAIN_URL = "http://books.toscrape.com/"
 
 class Category:
     """ Category class """
-    INDEX = 0
 
     def __init__(self):
-        """ init of the beautifulsoup result """
+        """ init of the beautifulsoup result and lists"""
         main_page = requests.get(MAIN_URL)
         self.main_page_soup = BeautifulSoup(main_page.content, 'html.parser')
-        self.main_categories = []
-        self.main_url_categories = []
+        self.categories = []
+        self.urls_categories = []
 
-    def create_list_category(self):
+    def names(self):
         """Find all categories """
         main_li = self.main_page_soup.find_all("li")
         for li in main_li:
@@ -25,10 +24,11 @@ class Category:
                 pos1 = str(li).find("                                ") + 32
                 pos2 = str(li).find("\n", pos1)
                 cat = (str(li)[pos1:pos2])
-                self.main_categories.append(cat)
+                self.categories.append(cat)
 
-    def create_list_url_category(self, create_list_category):
-        """Find all url categories """
+    def urls_cat(self):
+        """Find all url of categories """
+        index = 0
         main_li = self.main_page_soup.find_all("li")
         for li in main_li:
             if "category" in str(li) and not "books_1" in str(li):
@@ -36,6 +36,5 @@ class Category:
                 pos1 = str(li).find("href") + 6
                 pos2 = str(li).find(".html") + 5
                 url_cat = "http://books.toscrape.com/" + str(li)[pos1:pos2]
-                self.main_url_categories.append(url_cat)
-                print(str(self.main_categories[Category.INDEX]) + " : " + url_cat)
-                Category.INDEX += 1
+                self.urls_categories.append(url_cat)
+                index += 1

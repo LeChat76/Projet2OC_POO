@@ -1,4 +1,4 @@
-""" create object book"""
+""" create objects books"""
 import requests
 from bs4 import BeautifulSoup
 
@@ -6,11 +6,9 @@ from bs4 import BeautifulSoup
 class Book:
     """ Book class"""
 
-    def __init__(self, product_page_url):
-        self.product_page_url = product_page_url
-
-    def get_product_info(self):
+    def get_product_info(self, product_page_url):
         """ requesting web site """
+        self.product_page_url = product_page_url
         product_page = requests.get(self.product_page_url)
         soup = BeautifulSoup(product_page.content, 'html.parser')
 
@@ -52,3 +50,19 @@ class Book:
         pos1 = review_rating.find("star-rating") + 12
         pos2 = review_rating.find(">") - 1
         self.review_rating = review_rating[pos1: pos2]
+
+    def urls_books(self, category):
+        """Find all url for books of one category """
+        self.category = category
+        main_url = "http://books.toscrape.com/"
+        main_page_soup = BeautifulSoup(main_page.content, 'html.parser')
+        main_page = requests.get(main_url)
+        list_products_url = []
+        next_category_page_url = ""
+        main_li = main_page_soup.find_all("li")
+        for li in main_li:
+            if ("  " + self.category) in str(li) and not "books_1" in str(li) and "category" in str(li):
+                # extraction of the URL of this category
+                pos1 = str(li).find("href") + 6
+                pos2 = str(li).find(".html") + 5
+                main_url_category = "http://books.toscrape.com/" + (str(li)[pos1:pos2])
