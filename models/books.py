@@ -10,6 +10,7 @@ class Book:
         self.product_info = ""
         self.urls_books = []
         self.url_category = ""
+        self.title = ""
 
     def get_product_info(self):
         product_page = requests.get(self.product_page_url)
@@ -24,7 +25,7 @@ class Book:
         universal_product_code = td[0].string
 
         title = (soup.find("li", class_="active"))
-        title = title.string
+        self.title = title.string
 
         """ price_including_tax """
         price_including_tax = td[3].string
@@ -83,15 +84,7 @@ class Book:
             pos1 = next_category_page_name.find("href=") + 6
             pos2 = next_category_page_name.find(">next") - 1
             next_category_page_name = next_category_page_name[pos1:pos2]
-            next_category_page_url = main_url_category.replace("index.html", next_category_page_name)
+            next_category_page_url = product_url.replace("index.html", next_category_page_name)
             page = requests.get(next_category_page_url)
         else:
             pass
-
-# book = Book("https://books.toscrape.com/catalogue/its-only-the-himalayas_981/index.html")
-#book.get_product_info()
-#print(book.product_info)
-# book.get_urls_books("https://books.toscrape.com/catalogue/category/books/mystery_3/page-2.html")
-# print(book.urls_books)
-# book.get_url_cat("Travel")
-# book.get_urls_books(book.url_category)

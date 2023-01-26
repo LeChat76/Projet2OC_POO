@@ -10,7 +10,7 @@ MAIN_LI = MAIN_PAGE_SOUP.find_all("li")
 
 class Category:
     """ Category class """
-    def __init__(self, category):
+    def __init__(self, category=""):
         """ init of the beautifulsoup result and lists"""
         self.category = category
         self.names_categories = []
@@ -49,13 +49,3 @@ class Category:
                 pos1 = str(li).find("href") + 6
                 pos2 = str(li).find(".html") + 5
                 self.url_category = "http://books.toscrape.com/" + (str(li)[pos1:pos2])
-
-
-# category = Category()
-# category.get_names_cat()
-# category.get_url_cat()
-# category.get_urls_cats()
-# category.get_names_cat()
-# print(category.names_categories)
-# print(category.urls_categories)
-# print(category.url_category)

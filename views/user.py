@@ -4,6 +4,10 @@ from models.category import Category
 
 class UserView:
     """ User view """
+
+    def __init__(self):
+        self.img_download = ""
+
     def prompt_for_category(self, categories_names):
         """ Prompt for category to scrape"""
         self.cat_choice = ""

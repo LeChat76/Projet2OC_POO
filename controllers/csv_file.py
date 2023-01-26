@@ -3,6 +3,8 @@ import datetime
 import csv
 from models.books import Book
 from models.category import Category
+from models.images import Images
+from views.user import UserView
 
 HEADER = ["product_page_url", "universal_product_code (upc)", "title", "price_including_tax",
           "price_excluding_tax", "number_available", "product_description", "category", "review_rating",
@@ -20,6 +22,7 @@ class CSV:
         category.get_url_cat()
         book = Book()
         book.get_urls_books(category.url_category)
+        userview = UserView()
 
         now = datetime.datetime.now()
         date_time = now.strftime("%d%m%Y_%H%M%S")
@@ -50,9 +53,8 @@ class CSV:
                 book.get_product_info()
                 writer.writerow(book.product_info)
 
+                if userview.img_download == "Y":
+                    image = Images(url_book, book.title, self.category)
+                    image.get_image_file()
+
         csv_file.close()
-
-
-
-csv1 = CSV("Travel")
-csv1.recording()
