@@ -5,13 +5,15 @@ from bs4 import BeautifulSoup
 
 class Book:
     """ Book class"""
-
-    def get_product_info(self, product_page_url):
-        """ requesting web site """
+    def __init__(self, product_page_url=""):
         self.product_page_url = product_page_url
+        self.product_info = ""
+        self.urls_books = []
+        self.url_category = ""
+
+    def get_product_info(self):
         product_page = requests.get(self.product_page_url)
         soup = BeautifulSoup(product_page.content, 'html.parser')
-
         """ values in 'td' will be used 4 times, so I declared "globally"
         # [0] universal product code
         # [2] price excluding tax
@@ -22,47 +24,74 @@ class Book:
         universal_product_code = td[0].string
 
         title = (soup.find("li", class_="active"))
-        self.title = title.string
+        title = title.string
 
         """ price_including_tax """
-        self.price_including_tax = td[3].string
+        price_including_tax = td[3].string
 
         """ price_excluding_tax """
-        self.price_excluding_tax = td[2].string
+        price_excluding_tax = td[2].string
 
         """ number_available """
         number_available = td[5].string
-        self.number_available = (number_available.replace("In stock (", "")).replace(" available)", "")
+        number_available = (number_available.replace("In stock (", "")).replace(" available)", "")
 
         """ product_description """
         desc = soup.find("meta", attrs={"name": "description"})
         desc = (str(desc).replace("&quot;", "")).replace(";", ",")
-        self.product_description = desc[20:-31]
+        product_description = desc[20:-31]
+
+        """ category """
+        for link in soup.find_all('a'):
+            if "../category/books/" in str(link):
+                pos1 = str(link).find("books") + 6
+                pos2 = str(link).find("index", pos1) - 3
+                category = str(link)[pos1: pos2]
 
         """ image_url """
         image = str(soup.find(class_="item active"))
         pos1 = image.find("../../") + 6
         pos2 = image.find("jpg", pos1) + 3
-        self.image_url = ("http://books.toscrape.com/" + (image[pos1: pos2]))
+        image_url = ("http://books.toscrape.com/" + (image[pos1: pos2]))
 
         """ review_rating """
         review_rating = str(soup.find("p", class_="star-rating"))
         pos1 = review_rating.find("star-rating") + 12
         pos2 = review_rating.find(">") - 1
-        self.review_rating = review_rating[pos1: pos2]
+        review_rating = review_rating[pos1: pos2]
 
-    def urls_books(self, category):
-        """Find all url for books of one category """
-        self.category = category
-        main_url = "http://books.toscrape.com/"
-        main_page_soup = BeautifulSoup(main_page.content, 'html.parser')
-        main_page = requests.get(main_url)
-        list_products_url = []
-        next_category_page_url = ""
-        main_li = main_page_soup.find_all("li")
-        for li in main_li:
-            if ("  " + self.category) in str(li) and not "books_1" in str(li) and "category" in str(li):
-                # extraction of the URL of this category
-                pos1 = str(li).find("href") + 6
-                pos2 = str(li).find(".html") + 5
-                main_url_category = "http://books.toscrape.com/" + (str(li)[pos1:pos2])
+        self.product_info = [self.product_page_url, universal_product_code, title, price_including_tax,
+                             price_excluding_tax, number_available, product_description, category, review_rating,
+                             image_url]
+
+    def get_urls_books(self, url_category):
+        """Find all books urls for ONE url category """
+        """ extraction of all products url """
+        product_page = requests.get(url_category)
+        soup = BeautifulSoup(product_page.content, 'html.parser')
+        products_url = soup.find_all("h3")
+
+        for url in products_url:
+            pos1 = str(url).find("../../") + 9
+            pos2 = str(url).find("index.html", pos1)
+            product_url = ("http://books.toscrape.com/catalogue/" + str(url)[pos1: pos2])
+            self.urls_books.append(product_url)
+
+        """ test if next page exists """
+        next_category_page_name = str(soup.find("li", class_="next"))
+        if next_category_page_name != "None":
+            pos1 = next_category_page_name.find("href=") + 6
+            pos2 = next_category_page_name.find(">next") - 1
+            next_category_page_name = next_category_page_name[pos1:pos2]
+            next_category_page_url = main_url_category.replace("index.html", next_category_page_name)
+            page = requests.get(next_category_page_url)
+        else:
+            pass
+
+# book = Book("https://books.toscrape.com/catalogue/its-only-the-himalayas_981/index.html")
+#book.get_product_info()
+#print(book.product_info)
+# book.get_urls_books("https://books.toscrape.com/catalogue/category/books/mystery_3/page-2.html")
+# print(book.urls_books)
+# book.get_url_cat("Travel")
+# book.get_urls_books(book.url_category)

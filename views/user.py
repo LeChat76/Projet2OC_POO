@@ -4,12 +4,11 @@ from models.category import Category
 
 class UserView:
     """ User view """
-    def __init__(self, categories_names):
-        self.categories_names = categories_names
-        self.index = -1
-    def prompt_for_category(self):
+    def prompt_for_category(self, categories_names):
         """ Prompt for category to scrape"""
         self.cat_choice = ""
+        self.categories_names = categories_names
+        self.index = -1
 
         while self.cat_choice.upper() != "S" and self.cat_choice.upper() != "T":
             self.index += 1
