@@ -61,30 +61,30 @@ class Book:
         pos2 = review_rating.find(">") - 1
         review_rating = review_rating[pos1: pos2]
 
-        self.product_info = [self.product_page_url, universal_product_code, title, price_including_tax,
+        self.product_info = [self.product_page_url, universal_product_code, self.title, price_including_tax,
                              price_excluding_tax, number_available, product_description, category, review_rating,
                              image_url]
 
     def get_urls_books(self, url_category):
         """Find all books urls for ONE url category """
-        """ extraction of all products url """
         product_page = requests.get(url_category)
-        soup = BeautifulSoup(product_page.content, 'html.parser')
-        products_url = soup.find_all("h3")
+        while product_page.status_code == 200:
+            soup = BeautifulSoup(product_page.content, 'html.parser')
+            products_url = soup.find_all("h3")
 
-        for url in products_url:
-            pos1 = str(url).find("../../") + 9
-            pos2 = str(url).find("index.html", pos1)
-            product_url = ("http://books.toscrape.com/catalogue/" + str(url)[pos1: pos2])
-            self.urls_books.append(product_url)
+            for url in products_url:
+                pos1 = str(url).find("../../") + 9
+                pos2 = str(url).find("index.html", pos1)
+                product_url = ("http://books.toscrape.com/catalogue/" + str(url)[pos1: pos2])
+                self.urls_books.append(product_url)
 
-        """ test if next page exists """
-        next_category_page_name = str(soup.find("li", class_="next"))
-        if next_category_page_name != "None":
-            pos1 = next_category_page_name.find("href=") + 6
-            pos2 = next_category_page_name.find(">next") - 1
-            next_category_page_name = next_category_page_name[pos1:pos2]
-            next_category_page_url = product_url.replace("index.html", next_category_page_name)
-            page = requests.get(next_category_page_url)
-        else:
-            pass
+            """ test if next page exists """
+            next_category_page_name = str(soup.find("li", class_="next"))
+            if next_category_page_name != "None":
+                pos1 = next_category_page_name.find("href=") + 6
+                pos2 = next_category_page_name.find(">next") - 1
+                next_category_page_name = next_category_page_name[pos1:pos2]
+                next_category_page_url = url_category.replace("index.html", next_category_page_name)
+                product_page = requests.get(next_category_page_url)
+            else:
+                product_page.status_code = 404

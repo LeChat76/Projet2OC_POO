@@ -7,6 +7,8 @@ class UserView:
 
     def __init__(self):
         self.img_download = ""
+        self.cat_choice = ""
+        self.categories_names = ""
 
     def prompt_for_category(self, categories_names):
         """ Prompt for category to scrape"""
@@ -17,7 +19,7 @@ class UserView:
         while self.cat_choice.upper() != "S" and self.cat_choice.upper() != "T":
             self.index += 1
             self.cat_choice = input("Analyser catégorie " + self.categories_names[self.index]
-                               + " ([ENTER] pour suivante, (s)electionner celle ci ou (t)outes)?")
+                                    + " ([ENTER] pour suivante, (s)electionner celle ci ou (t)outes)?")
 
             """ if all categories listed, back to the first + warning """
             if self.index + 1 == len(self.categories_names):

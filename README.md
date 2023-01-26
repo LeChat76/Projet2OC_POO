@@ -1,5 +1,5 @@
 # Scraping of http://books.toscrape.com library shop
-## _Project 2 OpenClassRooms_ REMASTERISED in OOP ;-)
+## _Project 2 OpenClassRooms_ REMASTERISED in OOP with MVC pattern
 This script download all data stored in "Books to Scrape" e-shope.
 ## Installation
 ```sh

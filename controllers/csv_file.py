@@ -13,8 +13,9 @@ HEADER = ["product_page_url", "universal_product_code (upc)", "title", "price_in
 
 class CSV:
     """ CSV class """
-    def __init__(self, category):
+    def __init__(self, category, img_download):
         self.category = category
+        self.img_download = img_download
 
     def recording(self):
         """ manage recording of the CSV file """
@@ -53,7 +54,7 @@ class CSV:
                 book.get_product_info()
                 writer.writerow(book.product_info)
 
-                if userview.img_download == "Y":
+                if self.img_download == "Y":
                     image = Images(url_book, book.title, self.category)
                     image.get_image_file()
 
