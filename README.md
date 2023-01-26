@@ -1,10 +1,10 @@
 # Scraping of http://books.toscrape.com library shop
-## _Project 2 OpenClassRooms_
+## _Project 2 OpenClassRooms_ REMASTERISED in OOP ;-)
 This script download all data stored in "Books to Scrape" e-shope.
 ## Installation
 ```sh
 "git clone https://github.com/LeChat76/Projet2OC.git"
-"cd Projet2OC"
+"cd P2_POO"
 Create virtual environment :
 * "python -m venv .venv"
 * activate environment :
