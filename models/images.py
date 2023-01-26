@@ -10,6 +10,7 @@ class Images:
         self.url_book = url_book
         self.category = category
         self.title = title
+
     def get_image_file(self):
         """ method for download image of cover book"""
         product_page = requests.get(self.url_book)
@@ -28,8 +29,8 @@ class Images:
         img = requests.get(image_url, stream=True)
 
         """ replace special caracters incompatible with name file """
-        title = self.title.replace(":", " ").replace("'", " ").replace("*", ".").replace("/", "-").replace('"', '-').replace(
-                "?", ".").replace(",", " ")
+        title = self.title.replace(":", " ").replace("'", " ").replace("*", ".").replace("/", "-").replace('"', '-').\
+            replace("?", ".").replace(",", " ")
 
         """ to keep the same extension in cas of other image format (bmp or other) """
         image_ext = image_url[-4:]

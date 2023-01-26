@@ -1,5 +1,4 @@
 """ Base view """
-from models.category import Category
 
 
 class UserView:
@@ -9,6 +8,7 @@ class UserView:
         self.img_download = ""
         self.cat_choice = ""
         self.categories_names = ""
+        self.index = ""
 
     def prompt_for_category(self, categories_names):
         """ Prompt for category to scrape"""
@@ -28,7 +28,7 @@ class UserView:
 
     def prompt_for_img_download(self):
         """prompt user for download image or not (for speed scraping) """
-        img_download  = " "
+        img_download = " "
         while img_download.upper() != "Y" and img_download.upper() != "N" and img_download != "":
             img_download = input("Télécharger les images? (Y/n) ")
             if img_download == "":

@@ -43,6 +43,7 @@ class Book:
         product_description = desc[20:-31]
 
         """ category """
+        category = ""
         for link in soup.find_all('a'):
             if "../category/books/" in str(link):
                 pos1 = str(link).find("books") + 6

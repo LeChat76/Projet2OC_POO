@@ -24,13 +24,13 @@ class Controller:
             img_download = userview.img_download
 
             now_begin = datetime.datetime.now()
-
+            now_end = ""
             if userview.cat_choice.upper() == "T":
                 for category in categories:
                     csv = CSV(category, img_download)
                     csv.recording()
                     now_end = datetime.datetime.now()
-                    now_delta = now_end - now_begin
+                now_delta = now_end - now_begin
                 print("Fin de l'extraction, vous pouvez consulter les fichiers CSVs horodatés à la date du jour dans le"
                       " dossier \\Data\\CSVs.")
                 if img_download.upper() == "Y":
