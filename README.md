@@ -4,7 +4,7 @@ This script download all data stored in "Books to Scrape" e-shope.
 ## Installation
 ```sh
 "git clone https://github.com/LeChat76/Projet2OC.git"
-"cd P2_POO"
+"cd Projet2OC_POO"
 Create virtual environment :
 * "python -m venv .venv"
 * activate environment :
