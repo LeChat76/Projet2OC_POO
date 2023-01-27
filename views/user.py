@@ -5,7 +5,7 @@ class UserView:
     """ User view """
 
     def __init__(self):
-        self.img_download = ""
+        self.img_download = False
         self.cat_choice = ""
         self.categories_names = ""
         self.index = ""
@@ -28,8 +28,8 @@ class UserView:
 
     def prompt_for_img_download(self):
         """prompt user for download image or not (for speed scraping) """
-        img_download = " "
-        while img_download.upper() != "Y" and img_download.upper() != "N" and img_download != "":
-            img_download = input("Télécharger les images? (Y/n) ")
-            if img_download == "":
-                self.img_download = "Y"
+        download_pic = " "
+        while download_pic.upper() != "Y" and download_pic.upper() != "N" and download_pic != "":
+            download_pic = input("Télécharger les images? (Y/n) ")
+            if download_pic == "" or download_pic.upper() == "Y":
+                self.img_download = True
